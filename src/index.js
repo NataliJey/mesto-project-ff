@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import {initialCards} from './cards.js';
-import {createCard} from "./components/card.js";
+import {createCard, deleteCard, likeCard} from "./components/card.js";
 import {closeModal, initModal, openModal} from "./components/modal";
 
 const cardTemplate = document.getElementById('card-template');
@@ -26,6 +26,8 @@ const cardUrlInput = cardForm.querySelector('.popup__input_type_url');
 
 const cardOptions = {
   onOpenImage: openImage,
+  onDelete: deleteCard,
+  onLike: likeCard,
   cardTemplate: cardTemplate,
   selectors: {
     card: '.card',
