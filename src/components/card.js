@@ -11,11 +11,11 @@ export function createCard(card, options) {
   cardTitle.textContent = card.name;
 
   deleteButton.addEventListener('click', () => {
-    options.onDelete(cardListItem);
+    deleteCard(cardListItem);
   });
 
   likeButton.addEventListener('click', () => {
-    options.onLike(likeButton);
+    likeCard(likeButton, options);
   });
 
   cardImage.addEventListener('click', () => {
@@ -23,4 +23,12 @@ export function createCard(card, options) {
   })
 
   return cardListItem;
+}
+
+function likeCard(likeButton, options) {
+  likeButton.classList.toggle(options.classes.likeActiveButton);
+}
+
+function deleteCard(card) {
+  card.remove();
 }

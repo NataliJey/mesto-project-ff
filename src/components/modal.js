@@ -1,33 +1,33 @@
-const escapeListeners = new Map();
+export function openModal(popup) {
+  popup.classList.add('popup_is-opened');
 
-export function openModal(popup, options) {
-  popup.classList.add(options.classes.opened);
-  const escapeListener = (evt) => {
-    if (evt.key === 'Escape' && popup.classList.contains(options.classes.opened)) {
-      closeModal(popup, options);
-    }
-  }
-
-  escapeListeners.set(popup, escapeListener);
-
-  document.addEventListener('keydown', escapeListener);
+  document.addEventListener('keydown', closeByEsc)
 }
 
 export function closeModal(popup, options) {
-  popup.classList.remove(options.classes.opened);
-  document.removeEventListener('keydown', escapeListeners.get(popup));
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', closeByEsc);
+}
+
+const closeByEsc = (evt, options) => {
+  if (evt.key !== 'Escape') return;
+
+  const openPopup = document.querySelector('.popup_is-opened');
+  if (openPopup) {
+    closeModal(openPopup);
+  }
 }
 
 export function initModal(popup, options) {
   const popupCloseButton = popup.querySelector(options.selectors.closeButton);
 
   popupCloseButton.addEventListener('click', () => {
-    closeModal(popup, options);
+    closeModal(popup);
   });
 
   popup.addEventListener('click', (evt) => {
     if (evt.target === popup) {
-      closeModal(popup, options);
+      closeModal(popup);
     }
   })
 }
