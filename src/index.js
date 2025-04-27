@@ -4,12 +4,14 @@ import {closeModal, initModal, openModal} from './components/modal';
 import {editProfile, getInitialInfo, postNewCard, updateAvatarImage} from './api';
 import {clearValidation, enableValidation} from './validation';
 
+let userId;
+
 const cardTemplate = document.getElementById('card-template');
 const cardList = document.querySelector('.places__list');
 
 const imagePopup = document.querySelector('.popup_type_image');
 const imagePopupImage = imagePopup.querySelector('.popup__image');
-const ImagePopupCaption = imagePopup.querySelector('.popup__caption');
+const imagePopupCaption = imagePopup.querySelector('.popup__caption');
 
 const editPopup = document.querySelector('.popup_type_edit');
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -75,18 +77,19 @@ const showLoadingBtn = (isLoading, button) => {
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
 
-  showLoadingBtn(true, newCardPopup.querySelector('.popup__button'));
+  showLoadingBtn(true, cardSaveButton);
   cardSaveButton.disabled = true;
   postNewCard(cardNameInput.value.trim(), cardUrlInput.value.trim())
     .then((card) => {
-      addCard(card);
+      addCard(card, userId);
       closeModal(newCardPopup, popupOptions);
+      cardForm.reset();
     })
     .catch((error) => {
       console.log(error);
     })
     .finally(() => {
-      cardForm.reset();
+      cardSaveButton.disabled = false;
       showLoadingBtn(false, newCardPopup.querySelector('.popup__button'));
     });
 }
@@ -94,7 +97,7 @@ function handleCardFormSubmit(evt) {
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
-  showLoadingBtn(true, editPopup.querySelector('.popup__button'));
+  showLoadingBtn(true, editSaveButton);
   editSaveButton.disabled = true;
   editProfile(profileEditNameInput.value.trim(), profileEditDescriptionInput.value.trim())
     .then((res) => {
@@ -106,6 +109,7 @@ function handleEditFormSubmit(evt) {
       console.log(error);
     })
     .finally(() => {
+      editSaveButton.disabled = false;
       showLoadingBtn(false, editPopup.querySelector('.popup__button'));
     });
 }
@@ -119,18 +123,18 @@ function handleProfileForm(evt) {
     .then((res) => {
       profileImage.style.backgroundImage = `url('${res.avatar}')`;
       closeModal(profilePopup);
+      profileForm.reset();
     })
     .catch((error) => {
       console.log(error);
     })
     .finally(() => {
-      profileForm.reset();
       showLoadingBtn(false, profileForm.querySelector('.popup__button'));
     });
 }
 
 function openImage(card) {
-  ImagePopupCaption.textContent = card.name;
+  imagePopupCaption.textContent = card.name;
   imagePopupImage.src = card.link;
   imagePopupImage.alt = card.name;
   openModal(imagePopup, popupOptions);
@@ -153,7 +157,11 @@ function initPage() {
       profileNameElement.textContent = userInfo.name;
       profileDescriptionElement.textContent = userInfo.about;
       profileImage.style.backgroundImage = `url('${userInfo.avatar}')`;
+      userId = userInfo['_id'];
       addCards(cardsInfo, userInfo['_id']);
+    })
+    .catch((error) => {
+      console.log(error);
     })
   enableValidation(validationConfig);
 }
