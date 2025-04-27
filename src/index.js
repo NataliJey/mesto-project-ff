@@ -1,8 +1,8 @@
 import '../pages/index.css';
-import {createCard, deleteCard, likeCard} from "./components/card.js";
-import {closeModal, initModal, openModal} from "./components/modal";
-import {editProfile, getInitialInfo, postNewCard, updateAvatarImage} from "./api";
-import {clearValidation, enableValidation} from "./validation";
+import {createCard, deleteCard, likeCard} from './components/card.js';
+import {closeModal, initModal, openModal} from './components/modal';
+import {editProfile, getInitialInfo, postNewCard, updateAvatarImage} from './api';
+import {clearValidation, enableValidation} from './validation';
 
 const cardTemplate = document.getElementById('card-template');
 const cardList = document.querySelector('.places__list');
@@ -18,14 +18,14 @@ const profileEditNameInput = profileEditForm.querySelector('.popup__input_type_n
 const profileEditDescriptionInput = profileEditForm.querySelector('.popup__input_type_description');
 const profileNameElement = document.querySelector('.profile__title');
 const profileDescriptionElement = document.querySelector('.profile__description');
-const editSaveButton = editPopup.querySelector(".popup__button");
+const editSaveButton = editPopup.querySelector('.popup__button');
 
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const cardAddButton = document.querySelector('.profile__add-button');
 const cardForm = document.querySelector('form[name=new-place]');
 const cardNameInput = cardForm.querySelector('.popup__input_type_card-name');
 const cardUrlInput = cardForm.querySelector('.popup__input_type_url');
-const cardSaveButton = newCardPopup.querySelector(".popup__button");
+const cardSaveButton = newCardPopup.querySelector('.popup__button');
 
 const profileImageButton = document.querySelector('.profile__image_cover');
 const profileImage = document.querySelector('.profile__image');
@@ -60,22 +60,22 @@ const popupOptions = {
 };
 
 const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
 };
 
 const showLoadingBtn = (isLoading, button) => {
-  button.textContent = isLoading ? "Сохранение..." : "Сохранить";
+  button.textContent = isLoading ? 'Сохранение...' : 'Сохранить';
 };
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
 
-  showLoadingBtn(true, newCardPopup.querySelector(".popup__button"));
+  showLoadingBtn(true, newCardPopup.querySelector('.popup__button'));
   cardSaveButton.disabled = true;
   postNewCard(cardNameInput.value.trim(), cardUrlInput.value.trim())
     .then((card) => {
@@ -87,14 +87,14 @@ function handleCardFormSubmit(evt) {
     })
     .finally(() => {
       cardForm.reset();
-      showLoadingBtn(false, newCardPopup.querySelector(".popup__button"));
+      showLoadingBtn(false, newCardPopup.querySelector('.popup__button'));
     });
 }
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
-  showLoadingBtn(true, editPopup.querySelector(".popup__button"));
+  showLoadingBtn(true, editPopup.querySelector('.popup__button'));
   editSaveButton.disabled = true;
   editProfile(profileEditNameInput.value.trim(), profileEditDescriptionInput.value.trim())
     .then((res) => {
@@ -106,7 +106,7 @@ function handleEditFormSubmit(evt) {
       console.log(error);
     })
     .finally(() => {
-      showLoadingBtn(false, editPopup.querySelector(".popup__button"));
+      showLoadingBtn(false, editPopup.querySelector('.popup__button'));
     });
 }
 
@@ -176,13 +176,13 @@ cardAddButton.addEventListener('click', () => {
   clearValidation(newCardPopup, validationConfig);
 })
 
-profileImageButton.addEventListener("click", () => {
+profileImageButton.addEventListener('click', () => {
   openModal(profilePopup);
   profileForm.reset();
   clearValidation(profileForm, validationConfig);
 });
 
-profileForm.addEventListener("submit", handleProfileForm);
+profileForm.addEventListener('submit', handleProfileForm);
 
 cardForm.addEventListener('submit', handleCardFormSubmit);
 
